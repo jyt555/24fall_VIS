@@ -6,10 +6,8 @@
         <!-- 过滤器部分 -->
         <Filters 
           :movies="movies" 
+          v-model="filters" 
           @filter="applyFilters" 
-          :certificate="filters.certificate"
-          :director="filters.director"
-          :genre="filters.genre"
         />
         
         <!-- 搜索框：将其放置到最右边 -->
@@ -90,9 +88,9 @@ export default {
   methods: {
     // 生成随机颜色
     getRandomColor() {
-      const r = Math.floor(Math.random() * 256);
-      const g = Math.floor(Math.random() * 256);
-      const b = Math.floor(Math.random() * 256);
+      const r = Math.floor(Math.random() * 100) + 155;
+      const g = Math.floor(Math.random() * 100);
+      const b = Math.floor(Math.random() * 100) + 100;
       return `rgb(${r},${g},${b})`;
     },
 
@@ -201,7 +199,7 @@ export default {
 
 .charts {
   display: grid;
-  grid-template-columns: repeat(2, 50%); /* 两列布局，每列占 45% */
+  grid-template-columns: repeat(2, 50%); /* 两列布局，每列占 50% */
   grid-template-rows: repeat(2, auto); /* 每行自适应高度 */
   gap: 20px;
   width: 70%;  /* 增大图表区域宽度，确保图表能填满更多空间 */

@@ -2,13 +2,13 @@
   <div>
     <h2>IMDB Rating vs {{ yLabel }}</h2>
     <!-- 使用 scatterChartData -->
-    <Scatter :data="scatterChartData" />
+    <Scatter :data="scatterChartData" :options="chartOptions" />
   </div>
 </template>
 
 <script>
 import { Scatter } from 'vue-chartjs';
-import { Chart as ChartJS, Title, Tooltip, Legend, ScatterController, LinearScale, PointElement } from 'chart.js';
+import { Chart as ChartJS, Title, Tooltip, Legend, ScatterController, LinearScale, PointElement} from 'chart.js';
 
 ChartJS.register(Title, Tooltip, Legend, ScatterController, LinearScale, PointElement);
 
@@ -30,10 +30,9 @@ export default {
       // 根据电影名称设置颜色
       const backgroundColors = this.movies.map(movie => {
         const color = this.getColorByMovieName(movie.Series_Title);
-        console.log(`Color for ${movie.Series_Title}: ${color}`); // 调试输出
+        // console.log(`Color for ${movie.Series_Title}: ${color}`); // 调试输出
         return color;
       });
-
       // const backgroundColors = "#ffccff";
 
       const data = {
@@ -51,14 +50,103 @@ export default {
             return {
               x: imdbRating,  // 使用 IMDB_Rating 作为 X 轴数据
               y: yValue,      // 根据 yLabel 来获取 Y 轴数据
+              movie: movie // tag:movie
             };
           }).filter(item => item !== null), // 过滤掉 null 值
-          pointRadius: 5
+          pointRadius: 3,
+          hoverRadius: 5,
         }]
       };
-
       return data;
-    
+    },
+    chartOptions() {
+      const options = {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: true,
+            mode: 'index',
+            intersect: true, // 仅在鼠标位置与元素相交时应用
+            backgroundColor:'rgba(100,0,100,0.8)',
+            callbacks: {
+              title:(tooltipItems) => {
+                let title = '';
+                tooltipItems.forEach(function(tooltipItem) {
+                  title += tooltipItem.raw.movie.Series_Title;
+                });
+                // console.log(tooltipItems); // 调试输出
+                return "《" + title + "》";
+              },
+              afterTitle: (tooltipItems) => {
+                let director = '';
+                tooltipItems.forEach(function(tooltipItem) {
+                  director += tooltipItem.raw.movie.Director;
+                });
+                return '  ' + director;
+              },
+              // beforeLabel: () => {
+              //   return `label1`;
+              // },
+              label: (tooltipItem) => {
+                // let label = tooltipItem.parsed.y;
+                // console.log('label: ', this.yLabel, label); // 调试输出
+                return `${this.yLabel}: ${tooltipItem.parsed.y}`;
+              },
+              afterLabel: (tooltipItem) => {
+                let Gross_Earning = tooltipItem.raw.movie.Gross;
+                let Released_Year = tooltipItem.raw.movie.Released_Year;
+                let Runtime = tooltipItem.raw.movie.Runtime;
+                switch (this.yLabel) {
+                  case 'Gross Earning':
+                    return `Released Year: ${Released_Year}\nRuntime: ${Runtime}`;
+                  case 'Released Year':
+                    return `Gross: ${Gross_Earning}\nRuntime: ${Runtime}`;
+                  case 'Runtime':
+                    return `Gross: ${Gross_Earning}\nReleased Year: ${Released_Year}`;
+                  case 'No of Votes':
+                    return `Gross: ${Gross_Earning}\nReleased Year: ${Released_Year}\nRuntime: ${Runtime}`;
+                  default:
+                    return '';
+                }
+                // return `jyt & wrr`;
+              },
+              footer: (tooltipItems) => {
+                let star1 = '';
+                let star2 = '';
+                let star3 = '';
+                let star4 = '';
+                tooltipItems.forEach(function(tooltipItem) {
+                  star1 = tooltipItem.raw.movie.Star1;
+                  star2 = tooltipItem.raw.movie.Star2;
+                  star3 = tooltipItem.raw.movie.Star3;
+                  star4 = tooltipItem.raw.movie.Star4;
+                });
+                return `Stars: ${star1}\n           ${star2}\n           ${star3}\n           ${star4}`;
+                // return `Stars1: ${star1}\nStars2: ${star2}\nStars3: ${star3}\nStars4: ${star4}`;
+              },
+            }
+          },
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'IMDB Rating'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: this.yLabel
+            }
+          }
+        }
+      };
+      console.log(options); // 调试输出
+      return options;
     }
   },
   methods: {
@@ -83,7 +171,7 @@ export default {
         return '#66ccff';
       }
       const color = movie.color;
-      console.log('Find:', movie, color); // 调试输出
+      // console.log('Find:', movie, color); // 调试输出
       return color;
     },
     
