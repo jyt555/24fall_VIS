@@ -36,6 +36,7 @@ export default {
         data: this.movies.map(movie => {
           const imdbRating = parseFloat(movie.IMDB_Rating);
           const yValue = this.getYValue(movie);
+          const color = "#66ccff"
           // 过滤掉非法数据
           if (isNaN(imdbRating) || isNaN(yValue)) {
             return null; // 返回 null 以排除掉无效数据
@@ -43,7 +44,7 @@ export default {
           return {
             x: imdbRating,  // 使用 IMDB_Rating 作为 X 轴数据
             y: yValue,      // 根据 yLabel 来获取 Y 轴数据
-            backgroundColor: movie.color || this.getRandomColor() // 随机颜色
+            pointBackgroundColor: color
           };
         }).filter(item => item !== null), // 过滤掉 null 值
         pointRadius: 5
@@ -68,14 +69,6 @@ export default {
           return 0;
       }
     },
-    getRandomColor() {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    }
   }
 };
 </script>

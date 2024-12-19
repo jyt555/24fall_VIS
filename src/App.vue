@@ -88,6 +88,14 @@ export default {
     }
   },
   methods: {
+    // 生成随机颜色
+    getRandomColor() {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      return `rgb(${r},${g},${b})`;
+    },
+
     // 加载并解析 CSV 数据
     loadMovies() {
       console.log('Loading CSV data from URL:', csvFile);
@@ -114,8 +122,14 @@ export default {
                 if (results.data.length === 0) {
                   console.error("No data found in CSV file.");
                 } else {
-                  this.movies = results.data;
-                  console.log('Movies data loaded:', this.movies);
+                  // 为每部电影分配随机颜色
+                  this.movies = results.data.map(movie => {
+                    return {
+                      ...movie,
+                      color: this.getRandomColor()
+                    };
+                  });
+                  console.log('Movies data loaded with colors:', this.movies);
                 }
               }
             },
@@ -187,7 +201,7 @@ export default {
 
 .charts {
   display: grid;
-  grid-template-columns: repeat(2, 45%); /* 两列布局，每列占 45% */
+  grid-template-columns: repeat(2, 50%); /* 两列布局，每列占 45% */
   grid-template-rows: repeat(2, auto); /* 每行自适应高度 */
   gap: 20px;
   width: 70%;  /* 增大图表区域宽度，确保图表能填满更多空间 */
@@ -199,6 +213,8 @@ export default {
   flex-shrink: 0; /* 防止它被压缩 */
   align-self: flex-start; /* 确保它在顶部显示 */
   margin-left: auto; /* 将电影列表推到最右边 */
+  height: 80vh;
+  overflow-y: auto;  /* 滚动条 */
 }
 
 button {
