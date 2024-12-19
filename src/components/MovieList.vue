@@ -2,9 +2,9 @@
 <template>  
   <div class="movie-list">  
     <h2>Movie List</h2>  
-    <div v-for="movie in movies" :key="movie.SeriesTitle" class="movie-item">  
+    <div v-for="movie in movies" :key="movie.Series_Title" class="movie-item">  
       <span :style="{ backgroundColor: movie.color }" class="color-indicator"></span>  
-      {{ movie.SeriesTitle }}  
+      {{ movie.Series_Title }}  
     </div>  
   </div>  
 </template>  

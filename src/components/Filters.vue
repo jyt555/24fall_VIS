@@ -13,8 +13,6 @@
       <option value="">Select Genre</option>  
       <option v-for="gen in uniqueGenres" :key="gen" :value="gen">{{ gen }}</option>  
     </select>  
-    <!-- 添加搜索框 -->
-     <input type="text" class="search-title" v-model="searchText" placeholder="Search by title">
   </div>  
 </template>  
 
@@ -28,7 +26,7 @@ export default {
     return {  
       selectedCertificate: '',  
       selectedDirector: '',  
-      selectedGenre: ''  
+      selectedGenre: '' ,
     };  
   },  
   computed: {  

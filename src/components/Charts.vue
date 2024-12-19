@@ -24,7 +24,7 @@ export default {
       const labels = ['0-2', '2-4', '4-6', '6-8', '8-10'];  
       const data = Array(5).fill(0);  
       this.movies.forEach(movie => {  
-        const rating = parseFloat(movie.IMDBRating);  
+        const rating = parseFloat(movie.IMDB_Rating);  
         if (rating < 2) data[0]++;  
         else if (rating < 4) data[1]++;  
         else if (rating < 6) data[2]++;  
@@ -42,8 +42,8 @@ export default {
     },  
     lineChartData() {  
       // 计算发行年份趋势数据  
-      const years = [...new Set(this.movies.map(movie => movie.ReleasedYear))].sort();  
-      const data = years.map(year => this.movies.filter(movie => movie.ReleasedYear === year).length);  
+      const years = [...new Set(this.movies.map(movie => movie.Released_Year))].sort();  
+      const data = years.map(year => this.movies.filter(movie => movie.Released_Year === year).length);  
       return {  
         labels: years,  
         datasets: [{  
