@@ -9,6 +9,7 @@
 <script>
 import { Scatter } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, ScatterController, LinearScale, PointElement} from 'chart.js';
+import EventBus from '../EventBus.js';
 
 ChartJS.register(Title, Tooltip, Legend, ScatterController, LinearScale, PointElement);
 
@@ -19,6 +20,11 @@ export default {
   props: {
     movies: Array,
     yLabel: String
+  },
+  data() {
+    return {
+      highlightMovie: '',
+    };
   },
   computed: {
     scatterChartData() {
@@ -77,7 +83,9 @@ export default {
                 tooltipItems.forEach(function(tooltipItem) {
                   title += tooltipItem.raw.movie.Series_Title;
                 });
-                // console.log(tooltipItems); // 调试输出
+                this.highlightMovie = title;
+                this.emitHighlightMovie(title);
+                // console.log('ScatterChart:' + this.highlightMovie); // 调试输出
                 return "《" + title + "》";
               },
               afterTitle: (tooltipItems) => {
@@ -127,7 +135,19 @@ export default {
                 return `Stars: ${star1}\n           ${star2}\n           ${star3}\n           ${star4}`;
                 // return `Stars1: ${star1}\nStars2: ${star2}\nStars3: ${star3}\nStars4: ${star4}`;
               },
-            }
+            },
+            // onLeave: () => {
+            //   console.log('onLeave'); // 调试输出onLeave，失败
+            //   this.highlightMovie = '';
+            //   this.emitHighlightMovie('');
+            // }
+            
+            // external: (tooltipModel) => {
+            //   if (tooltipModel.opacity === 0) {
+            //     this.highlightMovie = '';
+            //     this.emitHighlightMovie('');
+            //   } 
+            // }
           },
         },
         scales: {
@@ -174,7 +194,9 @@ export default {
       // console.log('Find:', movie, color); // 调试输出
       return color;
     },
-    
+    emitHighlightMovie(movieTitle) { // 触发 highlightMovie 事件
+      EventBus.emit('highlightMovie', movieTitle);
+    },
   }
 };
 </script>
