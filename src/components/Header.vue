@@ -16,6 +16,8 @@ export default {
   text-align: center;  
   padding: 2px;  
   background-color: rgba(142, 43, 142, 0.387);
-  color: white;  
+  color: white; 
+  font-size: 22px;
+  height: 11vh;
 }  
 </style>

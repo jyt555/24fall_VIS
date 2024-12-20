@@ -86,12 +86,33 @@ export default {
     }
   },
   methods: {
-    // 生成随机颜色
-    getRandomColor() {
-      const r = Math.floor(Math.random() * 100) + 155;
-      const g = Math.floor(Math.random() * 100);
-      const b = Math.floor(Math.random() * 100) + 100;
-      return `rgb(${r},${g},${b})`;
+    // 生成随机颜色:粉紫色系
+    // getRandomColor() {
+    //   const r = Math.floor(Math.random() * 100) + 155;
+    //   const g = Math.floor(Math.random() * 100);
+    //   const b = Math.floor(Math.random() * 100) + 100;
+    //   return `rgb(${r},${g},${b})`;
+    // },
+
+    // 根据电影名称的md5值生成随机颜色，使每部电影的颜色固定
+    getRandomColor(movieName) {
+      const hash = this.hashCode(movieName);
+      // console.log('Movie name:', movieName, 'Hash:', hash); // 测试
+      const r = parseInt(hash.slice(2, 4), 16);
+      const g = parseInt(hash.slice(3, 5), 16);
+      const b = parseInt(hash.slice(4, 6), 16);
+      // 返回透明度alpha=0.5的颜色
+      return `rgba(${r},${g},${b},0.5)`;
+    },
+    hashCode(str) {
+      let hash = 0;
+      if (str.length === 0) return hash;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      return hash.toString(16).padStart(6, '3');  // 转为6位十六进制数，不足6位前面补
     },
 
     // 加载并解析 CSV 数据
@@ -124,7 +145,7 @@ export default {
                   this.movies = results.data.map(movie => {
                     return {
                       ...movie,
-                      color: this.getRandomColor()
+                      color: this.getRandomColor(movie.Series_Title) // color tag
                     };
                   });
                   console.log('Movies data loaded with colors:', this.movies);
@@ -207,7 +228,8 @@ export default {
 
 .moviesList {
   width: 300px;
-  background-color: rgba(235, 181, 235, 0.3);
+  background-color: rgba(235, 181, 235, 0.2);
+  /* border: 2px solid rgba(235, 181, 235, 0.3); */
   flex-shrink: 0; /* 防止它被压缩 */
   align-self: flex-start; /* 确保它在顶部显示 */
   margin-left: auto; /* 将电影列表推到最右边 */
