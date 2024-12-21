@@ -19,7 +19,7 @@
         />
         
         <!-- 重置按钮 -->
-        <button @click="resetFilters">Reset Filters</button>
+        <button @click="resetFilters" class="resetBtn">Reset</button>
       </div>
       <div class="main-content">
         <div class="charts">
@@ -208,6 +208,20 @@ export default {
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 200px;
+}
+
+.resetBtn {
+  background-color: #b87bc4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.resetBtn:hover {
+  background-color: #9a4ea8;
+}
+.resetBtn:active {
+  background-color: #7c278d;
 }
 
 .main-content {

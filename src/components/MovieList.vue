@@ -2,8 +2,15 @@
 <template>  
   <div class="movie-list">  
     <h2>Movie List</h2>  
-    <div v-for="movie in movies" :key="movie.Series_Title" class="movie-item">
-      <div class="movie-content" :class="{ highlighted: movie.Series_Title === highlightMovie }">
+    <div v-for="movie in movies" 
+        :key="movie.Series_Title" 
+        class="movie-item"
+        @mouseenter="chooseMovie(movie.Series_Title)"
+        @mouseout="chooseMovie('')"
+        >
+      <div class="movie-content" 
+          :class="{ highlighted: movie.Series_Title === (highlightMovie || chosenMovie) }"
+          >
         <span :style="{ backgroundColor: movie.color }" class="color-indicator"></span>
         <span>{{ movie.Series_Title }}</span>
       </div>
@@ -15,11 +22,14 @@
 import EventBus from '../EventBus.js';
 
 export default {  
-  props: ['movies'],
+  props: ['movies'], 
   created() {
     EventBus.on('highlightMovie',(movieTitle) => {
       this.highlightMovie = movieTitle;
       // console.log('MovieList:' + this.highlightMovie); // 调试输出
+      setTimeout(() => {
+        this.highlightMovie = '';
+      }, 1000);
     });
   },
   beforeUnmount() {
@@ -27,8 +37,15 @@ export default {
   },
   data() {
     return {
-      highlightMovie: ''
+      highlightMovie: '', // highlightMovie为鼠标悬停数据点上时在MovieList上高亮的电影
+      chosenMovie: '', // chosenMovie为鼠标悬停MovieList上时选中的电影
     };
+  },
+  methods: {  
+    chooseMovie(movieTitle) {
+      this.chosenMovie = movieTitle;
+      EventBus.emit('chooseMovie', movieTitle);
+    },
   },
 };  
 </script>  

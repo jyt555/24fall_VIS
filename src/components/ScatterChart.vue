@@ -24,6 +24,7 @@ export default {
   data() {
     return {
       highlightMovie: '',
+      chooseMovie: '',
     };
   },
   computed: {
@@ -37,9 +38,22 @@ export default {
       const backgroundColors = this.movies.map(movie => {
         const color = this.getColorByMovieName(movie.Series_Title);
         // console.log(`Color for ${movie.Series_Title}: ${color}`); // 调试输出
+        if (this.chooseMovie !== '') {
+          if (this.chooseMovie !== movie.Series_Title) {
+            return 'rgba(255,255,255,0.5)';
+          } 
+        }
         return color;
       });
-      // const backgroundColors = "#ffccff";
+      // const backgroundColors = "#66ccff";
+      const PointRadius = this.movies.map(movie => {
+        if (this.chooseMovie !== '') {
+          if (this.chooseMovie !== movie.Series_Title)
+            return 4;
+          return 7;
+        }
+        return 4;
+      });
 
       const data = {
         datasets: [
@@ -59,8 +73,8 @@ export default {
               movie: movie // tag:movie
             };
           }).filter(item => item !== null), // 过滤掉 null 值
-          pointRadius: 3,
-          hoverRadius: 5,
+          pointRadius: PointRadius,
+          hoverRadius: 7,
         }]
       };
       return data;
@@ -70,13 +84,25 @@ export default {
         responsive: true,
         plugins: {
           legend: {
-            display: false
+            display: false,
           },
           tooltip: {
             enabled: true,
+            // enabled: false, // test1:failed
             mode: 'index',
             intersect: true, // 仅在鼠标位置与元素相交时应用
             backgroundColor:'rgba(100,0,100,0.8)',
+            // external: (tooltipModel, tooltipItem) => { // test1:failed
+            //   if (tooltipModel.opacity === 0) {
+            //     this.highlightMovie = '';
+            //     this.emitHighlightMovie('');
+            //   } else if (tooltipModel.body) {
+            //     const title = tooltipItem.raw.movie.Series_Title;
+            //     this.highlightMovie = title;
+            //     this.emitHighlightMovie(title);
+            //     console.log('ScatterChart:' + this.highlightMovie); // 调试输出
+            //   }
+            // },
             callbacks: {
               title:(tooltipItems) => {
                 let title = '';
@@ -141,14 +167,8 @@ export default {
             //   this.highlightMovie = '';
             //   this.emitHighlightMovie('');
             // }
-            
-            // external: (tooltipModel) => {
-            //   if (tooltipModel.opacity === 0) {
-            //     this.highlightMovie = '';
-            //     this.emitHighlightMovie('');
-            //   } 
-            // }
           },
+          
         },
         scales: {
           x: {
@@ -167,7 +187,7 @@ export default {
       };
       console.log(options); // 调试输出
       return options;
-    }
+    },
   },
   methods: {
     getYValue(movie) {
@@ -197,7 +217,13 @@ export default {
     emitHighlightMovie(movieTitle) { // 触发 highlightMovie 事件
       EventBus.emit('highlightMovie', movieTitle);
     },
-  }
+  },
+  created() {
+    EventBus.on('chooseMovie', (movieTitle) => {
+      this.chooseMovie = movieTitle;
+      console.log('ScatterChart:choose ', movieTitle); // 调试输出
+    });
+  },
 };
 </script>
 
