@@ -47,7 +47,7 @@ import ScatterChart from './components/ScatterChart.vue';
 import Filters from './components/Filters.vue';
 import MovieList from './components/MovieList.vue';
 import Papa from 'papaparse';
-import csvFile from '/public/assets/movies_data.csv';  // 导入 CSV 文件
+import csvFile from '/public/assets/movies_data.csv';  // 导入 CSV 文件,文件夹下另一个csv是没处理过的数据
 import EventBus from './EventBus.js';
 
 export default {
@@ -178,6 +178,7 @@ export default {
         director: '',
         genre: ''
       };
+      EventBus.emit('ResetFilters');
       this.searchQuery = ''; // 重置搜索框
       this.chooseChart = -1; // 重置选择的散点图
       console.log('Filters reset');  // 打印重置状态

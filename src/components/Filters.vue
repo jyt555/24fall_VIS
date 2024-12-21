@@ -17,6 +17,8 @@
 </template>  
 
 <script>  
+import EventBus from '../EventBus.js';
+
 export default {  
   name: 'FiltersComponent',
   props: {  
@@ -48,7 +50,14 @@ export default {
         genre: this.selectedGenre  
       });  
     }  
-  }  
+  },
+  created() {
+    EventBus.on('ResetFilters', () => {
+      this.selectedCertificate = '';
+      this.selectedDirector = '';
+      this.selectedGenre = '';
+    })
+  },
 };  
 </script>  
 
