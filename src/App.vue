@@ -29,6 +29,7 @@
             :key="index"
             :movies="filteredMovies"
             :yLabel="label"
+            :class="getChartClass(index)"
           />
         </div>
         <div class="moviesList">
@@ -47,6 +48,7 @@ import Filters from './components/Filters.vue';
 import MovieList from './components/MovieList.vue';
 import Papa from 'papaparse';
 import csvFile from '/public/assets/movies_data.csv';  // 导入 CSV 文件
+import EventBus from './EventBus.js';
 
 export default {
   components: {
@@ -64,7 +66,8 @@ export default {
         certificate: '',
         director: '',
         genre: ''
-      }
+      },
+      chooseChart: -1, // 选择的散点图 -1: 平均视图，0-3: 各个散点图
     };
   },
   computed: {
@@ -94,7 +97,7 @@ export default {
     //   return `rgb(${r},${g},${b})`;
     // },
 
-    // 根据电影名称的md5值生成随机颜色，使每部电影的颜色固定
+    // 根据电影名称的hash值生成随机颜色，使每部电影的颜色固定
     getRandomColor(movieName) {
       const hash = this.hashCode(movieName);
       // console.log('Movie name:', movieName, 'Hash:', hash); // 测试
@@ -177,7 +180,47 @@ export default {
       };
       this.searchQuery = ''; // 重置搜索框
       console.log('Filters reset');  // 打印重置状态
-    }
+    },
+
+    // 根据散点图的索引获取类名
+    getChartClass(index) {
+      if (this.chooseChart === -1) {
+        return 'chart-avg';
+      } else {
+        switch (this.chooseChart) {
+          case 0:
+              if (index === 0) return 'chart-large-0';
+              if (index === 1) return 'chart-small-12';
+              if (index === 2) return 'chart-small-15';
+              if (index === 3) return 'chart-small-16';
+              break;
+          case 1:
+              if (index === 0) return 'chart-small-9';
+              if (index === 1) return 'chart-large-1';
+              if (index === 2) return 'chart-small-13';
+              if (index === 3) return 'chart-small-14';
+              break;
+          case 2:
+              if (index === 0) return 'chart-small-3';
+              if (index === 1) return 'chart-small-4';
+              if (index === 2) return 'chart-large-2';
+              if (index === 3) return 'chart-small-8';
+              break;
+          case 3:
+              if (index === 0) return 'chart-small-1';
+              if (index === 1) return 'chart-small-2';
+              if (index === 2) return 'chart-small-5';
+              if (index === 3) return 'chart-large-3';
+              break;
+          default: return 'chart-small';
+        }
+      }
+    },
+  },
+  created() {
+    EventBus.on('ChooseChart', (chooseChart) => {
+      this.chooseChart = chooseChart;
+    });
   },
   mounted() {
     this.loadMovies();  // 在组件挂载时加载电影数据
@@ -234,11 +277,84 @@ export default {
 
 .charts {
   display: grid;
-  grid-template-columns: repeat(2, 50%); /* 两列布局，每列占 50% */
-  grid-template-rows: repeat(2, auto); /* 每行自适应高度 */
+  grid-template-columns: repeat(4, 25%); /* 四列布局，每列占 25% */
+  grid-template-rows: repeat(4, auto); /* 每行自适应高度 */
   gap: 20px;
-  width: 70%;  /* 增大图表区域宽度，确保图表能填满更多空间 */
+  width: 70%;
 }
+.chart-avg {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.chart-large-0 {
+  grid-column: 1 / 4;
+  grid-row: 1 / 4;
+}
+.chart-large-1 {
+  grid-column: 2 / 5;
+  grid-row: 1 / 4;
+}
+.chart-large-2 {
+  grid-column: 1 / 4;
+  grid-row: 2 / 5;
+}
+.chart-large-3 {
+  grid-column: 2 / 5;
+  grid-row: 2 / 5;
+}
+.chart-small-12 {
+  grid-column: 4 / 5;
+  grid-row: 3 / 4;
+}
+.chart-small-15 {
+  grid-column: 3 / 4;
+  grid-row: 4 / 5;
+}
+.chart-small-16 {
+  grid-column: 4 / 5;
+  grid-row: 4 / 5;
+}
+.chart-small-9 {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+.chart-small-13 {
+  grid-column: 1 / 2;
+  grid-row: 4 / 5;
+}
+.chart-small-14 {
+  grid-column: 2 / 3;
+  grid-row: 4 / 5;
+}
+.chart-small-3 {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+.chart-small-4 {
+  grid-column: 4 / 4;
+  grid-row: 1 / 2;
+}
+.chart-small-8 {
+  grid-column: 4 / 5;
+  grid-row: 2 / 3;
+}
+.chart-small-1 {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+.chart-small-2 {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+.chart-small-5 {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+/* .chart-small {
+  grid-column: span 1;
+  grid-row: span 1;
+} */
+
 
 .moviesList {
   width: 300px;

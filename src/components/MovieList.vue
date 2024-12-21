@@ -6,7 +6,7 @@
         :key="movie.Series_Title" 
         class="movie-item"
         @mouseenter="chooseMovie(movie.Series_Title)"
-        @mouseout="chooseMovie('')"
+        @mouseleave="chooseMovie('')"
         >
       <div class="movie-content" 
           :class="{ highlighted: movie.Series_Title === (highlightMovie || chosenMovie) }"

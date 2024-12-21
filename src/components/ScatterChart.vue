@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>IMDB Rating vs {{ yLabel }}</h2>
+    <h2 @mousedown ="ChooseChart(yLabel)">IMDB Rating vs {{ yLabel }}</h2>
     <!-- 使用 scatterChartData -->
     <Scatter :data="scatterChartData" :options="chartOptions" />
   </div>
@@ -25,6 +25,7 @@ export default {
     return {
       highlightMovie: '',
       chooseMovie: '',
+      chooseChart: -1,
     };
   },
   computed: {
@@ -40,7 +41,7 @@ export default {
         // console.log(`Color for ${movie.Series_Title}: ${color}`); // 调试输出
         if (this.chooseMovie !== '') {
           if (this.chooseMovie !== movie.Series_Title) {
-            return 'rgba(255,255,255,0.5)';
+            return 'rgba(255,255,255,0.5)'; //未选中时半透明白色
           } 
         }
         return color;
@@ -52,6 +53,11 @@ export default {
             return 4;
           return 7;
         }
+        // if (this.highlightMovie !== '') {
+        //   if (this.highlightMovie !== movie.Series_Title)
+        //     return 4;
+        //   return 7;
+        // }
         return 4;
       });
 
@@ -111,6 +117,25 @@ export default {
                 });
                 this.highlightMovie = title;
                 this.emitHighlightMovie(title);
+                // // 根据yLabel设置chooseChart为0-3
+                // switch (this.yLabel) {
+                //   case 'Gross Earning':
+                //     this.chooseChart = 0;
+                //     break;
+                //   case 'Released Year':
+                //     this.chooseChart = 1;
+                //     break;
+                //   case 'Runtime':
+                //     this.chooseChart = 2;
+                //     break;
+                //   case 'No of Votes':
+                //     this.chooseChart = 3;
+                //     break;
+                //   default:
+                //     this.chooseChart = -1;
+                //     break;
+                // }
+                // this.emitChooseChart(this.chooseChart);
                 // console.log('ScatterChart:' + this.highlightMovie); // 调试输出
                 return "《" + title + "》";
               },
@@ -185,7 +210,7 @@ export default {
           }
         }
       };
-      console.log(options); // 调试输出
+      // console.log(options); // 调试输出
       return options;
     },
   },
@@ -217,11 +242,36 @@ export default {
     emitHighlightMovie(movieTitle) { // 触发 highlightMovie 事件
       EventBus.emit('highlightMovie', movieTitle);
     },
+    // emitChooseChart(chooseChart) { // 触发 chooseChart 事件
+    //   EventBus.emit('chooseChart', chooseChart);
+    // },
+    ChooseChart(yLabel) {
+      // 根据yLabel设置chooseChart为0-3
+      switch (yLabel) {
+        case 'Gross Earning':
+          this.chooseChart = 0;
+          break;
+        case 'Released Year':
+          this.chooseChart = 1;
+          break;
+        case 'Runtime':
+          this.chooseChart = 2;
+          break;
+        case 'No of Votes':
+          this.chooseChart = 3;
+          break;
+        default:
+          this.chooseChart = -1;
+          break;
+      }
+      // console.log('chooseChart: ', this.chooseChart); // 调试输出
+      EventBus.emit('ChooseChart', this.chooseChart);
+    },
   },
   created() {
     EventBus.on('chooseMovie', (movieTitle) => {
       this.chooseMovie = movieTitle;
-      console.log('ScatterChart:choose ', movieTitle); // 调试输出
+      // console.log('ScatterChart:choose ', movieTitle); // 调试输出
     });
   },
 };
