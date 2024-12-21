@@ -179,6 +179,7 @@ export default {
         genre: ''
       };
       this.searchQuery = ''; // 重置搜索框
+      this.chooseChart = -1; // 重置选择的散点图
       console.log('Filters reset');  // 打印重置状态
     },
 
@@ -189,28 +190,28 @@ export default {
       } else {
         switch (this.chooseChart) {
           case 0:
-              if (index === 0) return 'chart-large-0';
-              if (index === 1) return 'chart-small-12';
-              if (index === 2) return 'chart-small-15';
-              if (index === 3) return 'chart-small-16';
+              if (index === 0) return 'chart-large';
+              if (index === 1) return 'chart-small-1';
+              if (index === 2) return 'chart-small-2';
+              if (index === 3) return 'chart-small-3';
               break;
           case 1:
-              if (index === 0) return 'chart-small-9';
-              if (index === 1) return 'chart-large-1';
-              if (index === 2) return 'chart-small-13';
-              if (index === 3) return 'chart-small-14';
+              if (index === 0) return 'chart-small-1';
+              if (index === 1) return 'chart-large';
+              if (index === 2) return 'chart-small-2';
+              if (index === 3) return 'chart-small-3';
               break;
           case 2:
-              if (index === 0) return 'chart-small-3';
-              if (index === 1) return 'chart-small-4';
-              if (index === 2) return 'chart-large-2';
-              if (index === 3) return 'chart-small-8';
+              if (index === 0) return 'chart-small-1';
+              if (index === 1) return 'chart-small-2';
+              if (index === 2) return 'chart-large';
+              if (index === 3) return 'chart-small-3';
               break;
           case 3:
               if (index === 0) return 'chart-small-1';
               if (index === 1) return 'chart-small-2';
-              if (index === 2) return 'chart-small-5';
-              if (index === 3) return 'chart-large-3';
+              if (index === 2) return 'chart-small-3';
+              if (index === 3) return 'chart-large';
               break;
           default: return 'chart-small';
         }
@@ -286,74 +287,25 @@ export default {
   grid-column: span 2;
   grid-row: span 2;
 }
-.chart-large-0 {
-  grid-column: 1 / 4;
+.chart-large {
+  grid-column: 1 / 5;
   grid-row: 1 / 4;
-}
-.chart-large-1 {
-  grid-column: 2 / 5;
-  grid-row: 1 / 4;
-}
-.chart-large-2 {
-  grid-column: 1 / 4;
-  grid-row: 2 / 5;
-}
-.chart-large-3 {
-  grid-column: 2 / 5;
-  grid-row: 2 / 5;
-}
-.chart-small-12 {
-  grid-column: 4 / 5;
-  grid-row: 3 / 4;
-}
-.chart-small-15 {
-  grid-column: 3 / 4;
-  grid-row: 4 / 5;
-}
-.chart-small-16 {
-  grid-column: 4 / 5;
-  grid-row: 4 / 5;
-}
-.chart-small-9 {
-  grid-column: 1 / 2;
-  grid-row: 3 / 4;
-}
-.chart-small-13 {
-  grid-column: 1 / 2;
-  grid-row: 4 / 5;
-}
-.chart-small-14 {
-  grid-column: 2 / 3;
-  grid-row: 4 / 5;
-}
-.chart-small-3 {
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
-}
-.chart-small-4 {
-  grid-column: 4 / 4;
-  grid-row: 1 / 2;
-}
-.chart-small-8 {
-  grid-column: 4 / 5;
-  grid-row: 2 / 3;
 }
 .chart-small-1 {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  grid-row: 4 / 5;
+  height: 1%;
 }
 .chart-small-2 {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
+  grid-column: 3 / 4;
+  grid-row: 4 / 5;
+  height: 1%;
 }
-.chart-small-5 {
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
+.chart-small-3 {
+  grid-column: 4 / 5;
+  grid-row: 4 / 5;
+  height: 1%;
 }
-/* .chart-small {
-  grid-column: span 1;
-  grid-row: span 1;
-} */
 
 
 .moviesList {

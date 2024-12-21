@@ -2,7 +2,8 @@
   <div>
     <h2 @mousedown ="ChooseChart(yLabel)">IMDB Rating vs {{ yLabel }}</h2>
     <!-- 使用 scatterChartData -->
-    <Scatter :data="scatterChartData" :options="chartOptions" />
+    <Scatter 
+      :data="scatterChartData" :options="chartOptions" />
   </div>
 </template>
 
