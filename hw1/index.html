@@ -1,0 +1,132 @@
+<!DOCTYPE html>  
+<html lang="zh">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>HW1 优秀可视化案例介绍</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            margin: 0;  
+            padding: 0;  
+            background-color: #f4f4f4;  
+            background-image: url(./assets/hongkong_02.jpg);  /* 背景图片来源于ChinaVis2024（下附链接） */
+            background-size: cover;  
+            background-position: center;  
+            background-attachment: fixed;
+            margin-top: 100px;
+        }  
+
+        header {  
+            background: #35424a;
+            color: #ffffff; 
+            padding: 8px 0;
+            display: flex;
+            justify-content: center;  
+            align-items: center;
+            position: fixed; 
+            top: 0;  
+            left: 0;  
+            width: 100%;  
+            height: 8%;
+            z-index: 100;  
+        }  
+
+        section {  
+            padding: 20px; 
+            margin: 30px 10px;
+            background: #e8e8e8;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            line-height: 2;
+            
+        }  
+
+        ul {  
+            list-style:disc;
+            padding-left: 15px;  
+            line-height: 2;
+        }  
+
+        a {  
+            color: #3c525f;  
+            text-decoration: none;  
+            font-size: 102%;
+        }  
+        a:hover {  
+            text-decoration: underline;  
+            text-underline-offset: 5px;
+        }  
+        a:active {  
+            color: #969898;  
+        }  
+        .note {  
+            text-decoration:dotted;
+            text-decoration-color: #3c525f;
+            color: #0d3459;
+        }
+
+        h2 {  
+            border-bottom: 2px solid #6a7a84;
+            padding-bottom: 5px;
+            color: #3c525f;
+        }  
+
+        footer {  
+            display: flex;
+            justify-content: center;  
+            align-items: center;
+            padding: 5px 0; 
+            background: #35424a; 
+            color: #ffffff; 
+            position: relative;
+            bottom: 0;  
+            width: 100%;
+            height: 20px;
+        }  
+
+        /* 响应式设计 */  
+        @media (min-width: 768px) {  
+            section {  
+                margin: 20px auto; /* 自动外边距居中 */  
+                max-width: 800px; /* 最大宽度 */  
+            }  
+        }  
+    </style>  
+</head>  
+<body>  
+    <header>  
+        <h1>HW1 优秀可视化案例介绍</h1>  
+    </header>  
+    
+    <section class="background">  
+        <h2>背景介绍</h2>  
+        <p>本次作业我所选取的可视化案例为<a href="https://www.chinavis.org/2024/challenge.html">“第十一届中国可视化与可视分析大会（ChinaVis 2024）数据可视化竞赛”</a>中赛道一<span class="note">“可视分析挑战赛”</span>的一等作品。</p>  
+        <ul>
+            <li>参赛单位：上海交通大学</li>
+            <li>参赛人：提名人员: 白骐硕 吴治远 刘一诺 杨雨彤 曹俊翔 董笑菊（指导老师）</li>
+        </ul>
+        <p>该竞赛是中国可视化与可视分析大会的一个重要环节，参赛者们将使用自己最有效的可视化与可视分析技术和工具来完成数据分析及可视化任务。</p>
+    </section>  
+    
+    <section class="visualization">  
+        <h2>可视化介绍</h2>  
+        <p>该团队基于<span class="note">[析数启智]时序多变量教育数据可视分析挑战赛</span>提供的数据，设计了可视分析系统<span class="note">LearnClusterVis</span>。该系统通过聚类视图、题目视图等多视图展示学习者的学习行为和知识掌握情况，意在帮助教育机构更加全面地了解教学效果，优化教学方法。</p>  
+        <p>系统对输入的数据进行分析与处理，最后输出多个视图（见下图）。从各类视图中可以直观地看出学习者的知识掌握程度，并从答题分数、状态等多维度对其进行量化评估。该可视化系统还可以用来分析学习者画像、个性化学习行为模式、知识体系中的薄弱环节等。</p>
+        <img src="./assets/LearnClusterVis.jpg" alt="LearnClusterVis" width="100%">  
+    </section>  
+    
+    <section class="highlights">  
+        <h2>亮点介绍</h2>  
+        <ul>
+            <li>多视图展示，信息密度大：dashboard上呈现了多种视图，包括聚类视图、题目视图、知识视图等，在有限的空间内呈现了极为丰富的信息，便于教育机构从多维度了解学习者的学习情况。</li>
+            <li>视图展现形式丰富：不同视图采用不同展现形式，如网状图、饼图等，更好地呈现数据信息特点，带来更直观的视觉感受。</li>
+            <li>交互简单易上手：利用鼠标简单点击即可进行数据分析，操作简单、易于理解。</li>
+        </ul>
+        </section>  
+
+    <footer>  
+        <p>&copy; 2024 3220103450_姜雨童</p>  
+    </footer>  
+</body>  
+</html>
